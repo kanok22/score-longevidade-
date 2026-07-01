@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vitalis — Score de Longevidade &amp; Idade Biológica</title>
+  <meta name="description" content="Avalie a sua idade biológica através de um score multi-variável e receba um plano terapêutico personalizado para viver mais e melhor.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Caveat:wght@600&family=Oswald:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ============ TOPO / BARRA DE LATÃO ============ -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-emblem" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="34" height="34">
+            <circle cx="24" cy="24" r="21" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <path d="M24 10 v14 l9 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Vitalis</span>
+          <span class="brand-sub">Instituto de Longevidade</span>
+        </div>
+      </div>
+      <nav class="topnav">
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#avaliacao">Avaliação</a>
+        <a href="#resultados" id="nav-resultados" class="nav-disabled">Resultados</a>
+        <a href="#plano" id="nav-plano" class="nav-disabled">Plano</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="inicio">
+    <div class="hero-inner">
+      <div class="hero-copy reveal">
+        <div class="wax-seal" aria-hidden="true"><span>EST.<br>2026</span></div>
+        <h1>Qual é a sua verdadeira idade?</h1>
+        <p class="hero-lede">
+          O calendário conta os seus anos. O seu corpo conta outra história.
+          O <strong>Score Vitalis</strong> cruza mais de vinte variáveis — biometria,
+          hábitos, sono, nutrição e análises — para estimar a sua
+          <em>idade biológica</em> e desenhar um plano terapêutico à sua medida.
+        </p>
+        <div class="hero-actions">
+          <a href="#avaliacao" class="btn btn-brass btn-lg">
+            <span class="btn-face">Iniciar Avaliação</span>
+          </a>
+          <a href="#como-funciona" class="btn btn-ivory">
+            <span class="btn-face">Como funciona</span>
+          </a>
+        </div>
+        <p class="hero-note">≈ 4 minutos · gratuito · os dados não saem do seu dispositivo</p>
+      </div>
+
+      <div class="hero-gauge reveal delay-1">
+        <!-- Relógio de bolso decorativo -->
+        <div class="pocketwatch" aria-hidden="true">
+          <div class="pw-crown"></div>
+          <div class="pw-bezel">
+            <div class="pw-face">
+              <div class="pw-ticks"></div>
+              <div class="pw-label">VITALIS</div>
+              <div class="pw-hand pw-hand-hour"></div>
+              <div class="pw-hand pw-hand-min"></div>
+              <div class="pw-hand pw-hand-sec"></div>
+              <div class="pw-pin"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-shelf" aria-hidden="true"></div>
+  </section>
+
+  <!-- ============ COMO FUNCIONA ============ -->
+  <section class="section section-paper" id="como-funciona">
+    <div class="container">
+      <h2 class="section-title reveal"><span>Como funciona</span></h2>
+      <p class="section-lede reveal">Três passos, um método. Inspirado em marcadores usados na investigação em longevidade.</p>
+      <div class="steps">
+        <article class="step-card reveal">
+          <div class="step-medal">1</div>
+          <h3>Responda</h3>
+          <p>Um questionário guiado sobre biometria, movimento, sono, nutrição, mente e — se as tiver — análises clínicas recentes.</p>
+        </article>
+        <article class="step-card reveal delay-1">
+          <div class="step-medal">2</div>
+          <h3>Meça</h3>
+          <p>O motor Vitalis calcula a sua <strong>idade biológica estimada</strong> e seis sub-scores: coração, metabolismo, movimento, sono, nutrição e mente.</p>
+        </article>
+        <article class="step-card reveal delay-2">
+          <div class="step-medal">3</div>
+          <h3>Aja</h3>
+          <p>Recebe um <strong>plano terapêutico</strong> priorizado: as intervenções com maior impacto estimado no seu score, com metas concretas.</p>
+        </article>
+      </div>
+
+      <div class="ledger reveal">
+        <div class="ledger-ring" aria-hidden="true"></div>
+        <div class="ledger-ring r2" aria-hidden="true"></div>
+        <h3 class="ledger-title">O que entra no Score Vitalis</h3>
+        <div class="ledger-cols">
+          <ul>
+            <li><b>Cardiovascular</b> — pressão arterial, frequência cardíaca em repouso</li>
+            <li><b>Metabólico</b> — IMC, perímetro abdominal, glicemia, colesterol</li>
+          </ul>
+          <ul>
+            <li><b>Estilo de vida</b> — exercício aeróbico, força, tabaco, álcool</li>
+            <li><b>Recuperação</b> — horas e qualidade do sono</li>
+          </ul>
+          <ul>
+            <li><b>Nutrição</b> — padrão alimentar, vegetais, ultraprocessados</li>
+            <li><b>Mente &amp; social</b> — stress, propósito, ligações sociais</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AVALIAÇÃO ============ -->
+  <section class="section section-desk" id="avaliacao">
+    <div class="container">
+      <h2 class="section-title light reveal"><span>A sua avaliação</span></h2>
+
+      <div class="clipboard reveal">
+        <div class="clipboard-clip" aria-hidden="true"></div>
+        <div class="clipboard-paper">
+
+          <!-- Progresso -->
+          <div class="form-progress">
+            <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+            <ol class="progress-steps" id="progress-steps">
+              <li class="active" data-step="0">Perfil</li>
+              <li data-step="1">Corpo</li>
+              <li data-step="2">Movimento</li>
+              <li data-step="3">Sono &amp; Mente</li>
+              <li data-step="4">Nutrição</li>
+              <li data-step="5">Análises</li>
+            </ol>
+          </div>
+
+          <form id="assessment-form" autocomplete="off" novalidate>
+
+            <!-- PASSO 0 · PERFIL -->
+            <fieldset class="form-step active" data-step="0">
+              <legend>Perfil</legend>
+              <div class="field-grid">
+                <div class="field">
+                  <label for="f-idade">Idade (anos) <span class="req">*</span></label>
+                  <div class="input-well">
+                    <input type="number" id="f-idade" min="18" max="100" placeholder="ex.: 45" required>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Sexo biológico <span class="req">*</span></label>
+                  <div class="seg-control" role="radiogroup" data-name="sexo">
+                    <button type="button" class="seg-btn" data-value="f">Feminino</button>
+                    <button type="button" class="seg-btn" data-value="m">Masculino</button>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="f-nome">Nome (opcional)</label>
+                  <div class="input-well">
+                    <input type="text" id="f-nome" maxlength="40" placeholder="Como devemos tratá-lo?">
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- PASSO 1 · CORPO -->
+            <fieldset class="form-step" data-step="1">
+              <legend>Corpo</legend>
+              <div class="field-grid">
+                <div class="field">
+                  <label for="f-altura">Altura (cm) <span class="req">*</span></label>
+                  <div class="input-well"><input type="number" id="f-altura" min="120" max="230" placeholder="ex.: 172" required></div>
+                </div>
+                <div class="field">
+                  <label for="f-peso">Peso (kg) <span class="req">*</span></label>
+                  <div class="input-well"><input type="number" id="f-peso" min="35" max="250" step="0.1" placeholder="ex.: 74" required></div>
+                </div>
+                <div class="field">
+                  <label for="f-cintura">Perímetro abdominal (cm)</label>
+                  <div class="input-well"><input type="number" id="f-cintura" min="50" max="200" placeholder="opcional"></div>
+                </div>
+                <div class="field">
+                  <label>Pressão arterial habitual</label>
+                  <div class="dial-select" data-name="pa">
+                    <button type="button" class="dial-opt" data-value="otima">Ótima<small>&lt;120/80</small></button>
+                    <button type="button" class="dial-opt" data-value="normal">Normal<small>120–129</small></button>
+                    <button type="button" class="dial-opt" data-value="elevada">Elevada<small>130–139</small></button>
+                    <button type="button" class="dial-opt" data-value="alta">Alta<small>≥140/90</small></button>
+                    <button type="button" class="dial-opt" data-value="ns">Não sei</button>
+                  </div>
+                </div>
+                <div class="field field-wide">
+                  <label for="f-fc">Frequência cardíaca em repouso: <output id="out-fc" class="out-brass">65</output> bpm</label>
+                  <div class="slider-rail">
+                    <input type="range" id="f-fc" min="40" max="110" value="65" step="1">
+                  </div>
+                  <div class="slider-scale"><span>40</span><span>75</span><span>110</span></div>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- PASSO 2 · MOVIMENTO -->
+            <fieldset class="form-step" data-step="2">
+              <legend>Movimento &amp; hábitos</legend>
+              <div class="field-grid">
+                <div class="field field-wide">
+                  <label for="f-cardio">Exercício aeróbico moderado/intenso: <output id="out-cardio" class="out-brass">120</output> min/semana</label>
+                  <div class="slider-rail">
+                    <input type="range" id="f-cardio" min="0" max="600" value="120" step="15">
+                  </div>
+                  <div class="slider-scale"><span>0</span><span>300</span><span>600</span></div>
+                </div>
+                <div class="field field-wide">
+                  <label for="f-forca">Treino de força: <output id="out-forca" class="out-brass">1</output> sessões/semana</label>
+                  <div class="slider-rail">
+                    <input type="range" id="f-forca" min="0" max="7" value="1" step="1">
+                  </div>
+                  <div class="slider-scale"><span>0</span><span>3–4</span><span>7</span></div>
+                </div>
+                <div class="field">
+                  <label>Tabaco</label>
+                  <div class="dial-select" data-name="tabaco">
+                    <button type="button" class="dial-opt" data-value="nunca">Nunca fumei</button>
+                    <button type="button" class="dial-opt" data-value="ex">Ex-fumador</button>
+                    <button type="button" class="dial-opt" data-value="atual">Fumo atualmente</button>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Álcool</label>
+                  <div class="dial-select" data-name="alcool">
+                    <button type="button" class="dial-opt" data-value="zero">Não bebo</button>
+                    <button type="button" class="dial-opt" data-value="leve">≤ 3 bebidas/sem.</button>
+                    <button type="button" class="dial-opt" data-value="moderado">4–10 bebidas/sem.</button>
+                    <button type="button" class="dial-opt" data-value="alto">&gt; 10 bebidas/sem.</button>
+                  </div>
+                </div>
+                <div class="field field-wide">
+                  <label class="toggle-row">
+                    <span>Passa a maior parte do dia sentado(a)?</span>
+                    <span class="toggle" data-name="sedentario">
+                      <span class="toggle-knob"></span>
+                      <span class="toggle-txt-off">Não</span>
+                      <span class="toggle-txt-on">Sim</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- PASSO 3 · SONO & MENTE -->
+            <fieldset class="form-step" data-step="3">
+              <legend>Sono &amp; mente</legend>
+              <div class="field-grid">
+                <div class="field field-wide">
+                  <label for="f-sono">Horas de sono por noite: <output id="out-sono" class="out-brass">7</output> h</label>
+                  <div class="slider-rail">
+                    <input type="range" id="f-sono" min="3" max="12" value="7" step="0.5">
+                  </div>
+                  <div class="slider-scale"><span>3h</span><span>7–8h</span><span>12h</span></div>
+                </div>
+                <div class="field">
+                  <label>Qualidade do sono</label>
+                  <div class="dial-select" data-name="qsono">
+                    <button type="button" class="dial-opt" data-value="boa">Acordo renovado</button>
+                    <button type="button" class="dial-opt" data-value="media">Razoável</button>
+                    <button type="button" class="dial-opt" data-value="ma">Acordo cansado</button>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Nível de stress habitual</label>
+                  <div class="dial-select" data-name="stress">
+                    <button type="button" class="dial-opt" data-value="baixo">Baixo</button>
+                    <button type="button" class="dial-opt" data-value="medio">Moderado</button>
+                    <button type="button" class="dial-opt" data-value="alto">Elevado / crónico</button>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Ligações sociais</label>
+                  <div class="dial-select" data-name="social">
+                    <button type="button" class="dial-opt" data-value="fortes">Convívio frequente</button>
+                    <button type="button" class="dial-opt" data-value="medias">De vez em quando</button>
+                    <button type="button" class="dial-opt" data-value="fracas">Sinto-me isolado(a)</button>
+                  </div>
+                </div>
+                <div class="field field-wide">
+                  <label class="toggle-row">
+                    <span>Tem um propósito / projetos que o entusiasmam?</span>
+                    <span class="toggle" data-name="proposito">
+                      <span class="toggle-knob"></span>
+                      <span class="toggle-txt-off">Não</span>
+                      <span class="toggle-txt-on">Sim</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- PASSO 4 · NUTRIÇÃO -->
+            <fieldset class="form-step" data-step="4">
+              <legend>Nutrição</legend>
+              <div class="field-grid">
+                <div class="field field-wide">
+                  <label for="f-veg">Porções de vegetais + fruta por dia: <output id="out-veg" class="out-brass">3</output></label>
+                  <div class="slider-rail">
+                    <input type="range" id="f-veg" min="0" max="10" value="3" step="1">
+                  </div>
+                  <div class="slider-scale"><span>0</span><span>5</span><span>10</span></div>
+                </div>
+                <div class="field">
+                  <label>Ultraprocessados (refrigerantes, snacks, fast-food)</label>
+                  <div class="dial-select" data-name="upf">
+                    <button type="button" class="dial-opt" data-value="raro">Raramente</button>
+                    <button type="button" class="dial-opt" data-value="semanal">Algumas vezes/semana</button>
+                    <button type="button" class="dial-opt" data-value="diario">Todos os dias</button>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Padrão alimentar dominante</label>
+                  <div class="dial-select" data-name="padrao">
+                    <button type="button" class="dial-opt" data-value="mediterranico">Mediterrânico<small>azeite, peixe, leguminosas</small></button>
+                    <button type="button" class="dial-opt" data-value="misto">Misto / variado</button>
+                    <button type="button" class="dial-opt" data-value="ocidental">Ocidental<small>carne processada, fritos</small></button>
+                  </div>
+                </div>
+                <div class="field field-wide">
+                  <label class="toggle-row">
+                    <span>Bebe água suficiente (≈ 1,5–2 L/dia)?</span>
+                    <span class="toggle" data-name="agua">
+                      <span class="toggle-knob"></span>
+                      <span class="toggle-txt-off">Não</span>
+                      <span class="toggle-txt-on">Sim</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- PASSO 5 · ANÁLISES -->
+            <fieldset class="form-step" data-step="5">
+              <legend>Análises clínicas <small class="legend-note">(opcional — melhora a precisão)</small></legend>
+              <div class="field-grid">
+                <div class="field">
+                  <label for="f-glicemia">Glicemia em jejum (mg/dL)</label>
+                  <div class="input-well"><input type="number" id="f-glicemia" min="50" max="400" placeholder="ex.: 92"></div>
+                </div>
+                <div class="field">
+                  <label for="f-hdl">Colesterol HDL (mg/dL)</label>
+                  <div class="input-well"><input type="number" id="f-hdl" min="10" max="150" placeholder="ex.: 55"></div>
+                </div>
+                <div class="field">
+                  <label for="f-ldl">Colesterol LDL (mg/dL)</label>
+                  <div class="input-well"><input type="number" id="f-ldl" min="30" max="400" placeholder="ex.: 110"></div>
+                </div>
+                <div class="field">
+                  <label for="f-trig">Triglicéridos (mg/dL)</label>
+                  <div class="input-well"><input type="number" id="f-trig" min="30" max="1000" placeholder="ex.: 120"></div>
+                </div>
+              </div>
+              <p class="privacy-note">🔒 Tudo é calculado localmente no seu navegador. Nenhum dado é enviado ou guardado em servidores.</p>
+            </fieldset>
+
+            <!-- NAVEGAÇÃO -->
+            <div class="form-nav">
+              <button type="button" class="btn btn-ivory" id="btn-prev" disabled><span class="btn-face">← Anterior</span></button>
+              <button type="button" class="btn btn-brass" id="btn-next"><span class="btn-face">Seguinte →</span></button>
+              <button type="button" class="btn btn-emerald hidden" id="btn-calc"><span class="btn-face">⚗ Calcular Idade Biológica</span></button>
+            </div>
+            <p class="form-error hidden" id="form-error">Preencha os campos assinalados com * antes de continuar.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESULTADOS ============ -->
+  <section class="section section-velvet hidden" id="resultados">
+    <div class="container">
+      <h2 class="section-title light reveal"><span>Os seus resultados</span></h2>
+
+      <div class="results-grid">
+        <!-- Mostrador principal -->
+        <div class="gauge-plate reveal">
+          <div class="plate-screw ts-l" aria-hidden="true"></div>
+          <div class="plate-screw ts-r" aria-hidden="true"></div>
+          <div class="plate-screw bs-l" aria-hidden="true"></div>
+          <div class="plate-screw bs-r" aria-hidden="true"></div>
+
+          <h3 class="plate-title">Idade Biológica Estimada</h3>
+          <div class="gauge-wrap">
+            <svg id="bio-gauge" viewBox="0 0 400 260" role="img" aria-label="Mostrador de idade biológica">
+              <!-- construído por JS -->
+            </svg>
+            <div class="gauge-readout">
+              <span class="bio-number" id="bio-number">—</span>
+              <span class="bio-unit">anos</span>
+            </div>
+          </div>
+          <div class="gauge-compare">
+            <div class="cmp-box">
+              <span class="cmp-label">Idade cronológica</span>
+              <span class="cmp-value" id="chrono-value">—</span>
+            </div>
+            <div class="cmp-box" id="delta-box">
+              <span class="cmp-label">Diferença</span>
+              <span class="cmp-value" id="delta-value">—</span>
+            </div>
+          </div>
+          <p class="gauge-verdict" id="gauge-verdict"></p>
+        </div>
+
+        <!-- Sub-scores -->
+        <div class="meters-cabinet reveal delay-1">
+          <h3 class="cabinet-title">Painel de Sistemas</h3>
+          <div class="meters" id="meters"><!-- construído por JS --></div>
+          <div class="cabinet-legend">
+            <span><i class="lg lg-bad"></i> Atenção</span>
+            <span><i class="lg lg-mid"></i> A melhorar</span>
+            <span><i class="lg lg-good"></i> Excelente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PLANO TERAPÊUTICO ============ -->
+  <section class="section section-paper hidden" id="plano">
+    <div class="container">
+      <h2 class="section-title reveal"><span>O seu plano terapêutico</span></h2>
+      <p class="section-lede reveal" id="plano-lede"></p>
+
+      <div class="rx-pad reveal">
+        <div class="rx-header">
+          <div class="rx-logo">℞</div>
+          <div>
+            <div class="rx-clinic">Instituto Vitalis · Medicina do Estilo de Vida</div>
+            <div class="rx-for" id="rx-for">Plano para: —</div>
+          </div>
+          <div class="rx-date" id="rx-date"></div>
+        </div>
+        <div class="rx-body" id="rx-body"><!-- construído por JS --></div>
+        <div class="rx-footer">
+          <div class="rx-signature">Vitalis<span>assinatura digital</span></div>
+          <button type="button" class="btn btn-ivory btn-sm" id="btn-print"><span class="btn-face">🖨 Imprimir plano</span></button>
+          <button type="button" class="btn btn-brass btn-sm" id="btn-restart"><span class="btn-face">↺ Repetir avaliação</span></button>
+        </div>
+      </div>
+
+      <div class="disclaimer reveal">
+        <p><strong>Aviso importante:</strong> o Score Vitalis é uma ferramenta educativa de auto-conhecimento, inspirada em fatores de risco descritos na literatura científica. <u>Não é um dispositivo médico, não faz diagnósticos e não substitui a avaliação de um profissional de saúde.</u> Consulte o seu médico antes de alterar medicação, dieta ou exercício, sobretudo se tiver doenças crónicas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RODAPÉ ============ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>© 2026 Vitalis · Instituto de Longevidade — ferramenta educativa, sem fins de diagnóstico.</p>
+      <p class="footer-fineprint">Todos os cálculos são efetuados no seu dispositivo.</p>
+    </div>
+  </footer>
+
+  <script src="js/score.js"></script>
+  <script src="js/plan.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
