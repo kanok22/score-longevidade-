@@ -390,6 +390,19 @@
     renderMeters(resultado.dominios);
     renderPlano(resultado);
 
+    // deixa o resultado pronto a ser guardado na conta (conta.html)
+    try {
+      localStorage.setItem('vitalis_ultimo_resultado', JSON.stringify({
+        idadeCronologica: resultado.idadeCronologica,
+        idadeBiologica: resultado.idadeBiologica,
+        delta: resultado.delta,
+        imc: resultado.imc,
+        dominios: Object.fromEntries(
+          Object.entries(resultado.dominios).map(([k, v]) => [k, v.score])
+        ),
+      }));
+    } catch { /* armazenamento indisponível — segue sem guardar */ }
+
     // navegar e animar
     document.getElementById('resultados').scrollIntoView({ behavior: 'smooth' });
     setTimeout(() => {

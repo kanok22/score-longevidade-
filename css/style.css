@@ -1291,6 +1291,308 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* ============================================================
+   CONTA — autenticação, loja de planos, área privada
+   ============================================================ */
+.auth-card {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 2rem 2.2rem 2.2rem;
+  border-radius: 16px;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.015) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, var(--paper), #ecdfc6);
+  border: 1px solid #cbbc9c;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.85),
+    0 24px 48px rgba(0,0,0,.5);
+}
+.auth-card .field { margin-bottom: 1.1rem; }
+.auth-submit { width: 100%; margin-top: .4rem; }
+.auth-submit .btn-face { display: block; }
+.auth-tabs {
+  display: flex;
+  margin-bottom: 1.6rem;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #b3a37f;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.2);
+  background: #e7dbbe;
+}
+.auth-tab {
+  flex: 1;
+  border: none;
+  padding: .85rem .5rem;
+  font-family: var(--font-dial);
+  font-size: .9rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.auth-tab + .auth-tab { border-left: 1px solid #c6b592; }
+.auth-tab.selected {
+  color: #3d2c0c;
+  background: linear-gradient(180deg, var(--brass-hi), var(--brass));
+  box-shadow: inset 0 2px 2px rgba(255,255,255,.6), inset 0 -2px 3px rgba(0,0,0,.25);
+  text-shadow: 0 1px 0 rgba(255,240,190,.6);
+}
+.auth-mode-note {
+  margin-top: 1.2rem;
+  font-size: .8rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.account-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+.private-grid {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 2.2rem;
+  align-items: stretch;
+}
+@media (max-width: 900px) { .private-grid { grid-template-columns: 1fr; } }
+.last-numbers { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.last-numbers .cmp-box { min-width: 130px; }
+.last-numbers .delta-good .cmp-value { color: #8ee6b0; text-shadow: 0 0 8px rgba(110,230,160,.45); }
+.last-numbers .delta-bad .cmp-value { color: #ef9a8b; text-shadow: 0 0 8px rgba(240,130,110,.45); }
+.empty-note { color: #cbb98d; font-style: italic; text-align: center; padding: .6rem 0; }
+.section-paper .empty-note, .owned-block .empty-note { color: var(--ink-soft); }
+.empty-note a { color: inherit; }
+
+.history-list { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: .6rem .9rem;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #17130d, #241d13);
+  border: 1px solid #4d4028;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.07);
+  font-family: var(--font-dial);
+}
+.h-date { font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; color: #9d8b64; flex: 1; }
+.h-bio { color: #f0dfae; }
+.h-delta { min-width: 3.5rem; text-align: right; }
+.h-delta.good { color: #8ee6b0; }
+.h-delta.bad { color: #ef9a8b; }
+
+/* Cupão */
+.coupon-bar {
+  display: flex;
+  gap: .8rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2.2rem;
+}
+.coupon-well { min-width: 260px; }
+.coupon-well input { text-transform: uppercase; letter-spacing: .08em; }
+.coupon-state { font-weight: 600; font-size: .9rem; }
+.coupon-state.good { color: #1f5c3e; }
+.coupon-state.bad { color: var(--wine); }
+
+/* Loja */
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.6rem;
+  margin-bottom: 3rem;
+}
+.shop-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: 2.3rem 1.4rem 1.4rem;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fdf8ec, #f0e6cf);
+  border: 1px solid #cbbc9c;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.9),
+    0 10px 22px rgba(74,56,28,.22);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.shop-card:hover { transform: translateY(-4px); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 16px 30px rgba(74,56,28,.3); }
+.shop-card.owned { opacity: .85; }
+.shop-stamp {
+  position: absolute;
+  top: -22px; left: 50%;
+  transform: translateX(-50%);
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 1.3rem;
+  background: radial-gradient(circle at 32% 28%, var(--brass-hi), var(--brass) 55%, var(--brass-lo));
+  border: 2px solid var(--brass-shadow);
+  box-shadow: inset 0 2px 3px rgba(255,255,255,.7), inset 0 -3px 5px rgba(0,0,0,.35), 0 5px 10px rgba(0,0,0,.35);
+}
+.shop-cat {
+  align-self: center;
+  font-family: var(--font-dial);
+  font-size: .62rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #9a8358;
+}
+.shop-card h4 { font-family: var(--font-display); font-size: 1.06rem; text-align: center; }
+.shop-card p { font-size: .88rem; color: var(--ink-soft); flex: 1; }
+.shop-buy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .6rem;
+  margin-top: .5rem;
+  flex-wrap: wrap;
+}
+.price-tag {
+  font-family: var(--font-dial);
+  font-size: 1.05rem;
+  color: #3d2c0c;
+  padding: .3rem .8rem .3rem 1.1rem;
+  background: linear-gradient(180deg, var(--brass-hi), var(--brass));
+  border: 1px solid var(--brass-shadow);
+  border-radius: 6px 10px 10px 6px;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.7), inset 0 -2px 3px rgba(0,0,0,.25), 0 2px 4px rgba(0,0,0,.25);
+  clip-path: polygon(9px 0, 100% 0, 100% 100%, 9px 100%, 0 50%);
+}
+.price-tag s { opacity: .55; font-size: .85rem; margin-right: .2rem; }
+.price-tag.free { background: linear-gradient(180deg, #8cd6ab, #4d9e73); color: #0f3a26; border-color: #2c6247; }
+.owned-badge {
+  font-family: var(--font-dial);
+  font-size: .72rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #1f5c3e;
+  padding: .35rem .7rem;
+  border: 1px solid #74ab8f;
+  border-radius: 8px;
+  background: #dcefe4;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+}
+
+/* Os meus planos */
+.owned-block {
+  max-width: 860px;
+  margin: 0 auto 2.2rem;
+  padding: 1.8rem 2rem;
+  border-radius: 14px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 27px, var(--paper-line) 27px 28px),
+    linear-gradient(180deg, #fbf4e3, #f1e7cf);
+  border: 1px solid #cbbc9c;
+  box-shadow: 0 12px 26px rgba(74,56,28,.25), inset 0 1px 0 rgba(255,255,255,.85);
+}
+.owned-title { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 1rem; }
+.owned-cat {
+  font-family: var(--font-dial);
+  font-size: .8rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #8a6a24;
+  margin: 1.1rem 0 .5rem;
+}
+.owned-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: .8rem .2rem;
+  border-bottom: 1px dashed var(--paper-line);
+}
+.owned-info strong { display: block; font-family: var(--font-display); }
+.owned-info small { color: var(--ink-soft); font-style: italic; }
+.owned-actions { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 1.2rem;
+  background: rgba(20, 14, 8, .72);
+  backdrop-filter: blur(3px);
+  animation: modal-fade .25s ease;
+}
+@keyframes modal-fade { from { opacity: 0; } }
+.modal-card {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: 84vh;
+  overflow: auto;
+  padding: 2.2rem 2.2rem 2rem;
+  border-radius: 14px;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.015) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, var(--paper), #ecdfc6);
+  border: 1px solid #cbbc9c;
+  box-shadow: 0 30px 60px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.85);
+  animation: modal-pop .3s cubic-bezier(.2,1.4,.4,1);
+}
+@keyframes modal-pop { from { transform: scale(.9) translateY(16px); opacity: 0; } }
+.modal-close {
+  position: absolute;
+  top: .8rem; right: .8rem;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid #b3a37f;
+  background: linear-gradient(180deg, #fbf4e1, #e9dcbd);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 2px 0 #b3a37f;
+  cursor: pointer;
+  font-size: .9rem;
+  color: var(--ink-soft);
+}
+.modal-close:active { transform: translateY(2px); box-shadow: inset 0 2px 3px rgba(0,0,0,.25); }
+.modal-title { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: .8rem; }
+.modal-card p { margin-bottom: .8rem; color: var(--ink-soft); }
+.modal-card code {
+  font-family: var(--font-dial);
+  background: #e7dbbe;
+  padding: .1rem .45rem;
+  border-radius: 6px;
+  border: 1px solid #c6b592;
+  color: var(--ink);
+}
+.modal-price { font-size: 1.05rem; color: var(--ink); }
+.plan-steps { margin: 0 0 1rem 1.2rem; }
+.plan-steps li { margin-bottom: .55rem; color: var(--ink-soft); }
+.modal-note { font-size: .85rem; font-style: italic; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  left: 50%; bottom: 26px;
+  transform: translateX(-50%);
+  z-index: 95;
+  max-width: min(480px, 92vw);
+  padding: .8rem 1.4rem;
+  border-radius: 12px;
+  font-family: var(--font-dial);
+  font-size: .9rem;
+  letter-spacing: .04em;
+  color: #f3e8cd;
+  background: linear-gradient(180deg, var(--leather-hi), var(--leather));
+  border: 1px solid #241811;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 10px 24px rgba(0,0,0,.5);
+  animation: toast-in .35s cubic-bezier(.2,1.4,.4,1);
+}
+@keyframes toast-in { from { transform: translate(-50%, 20px); opacity: 0; } }
+
+.results-actions { text-align: center; margin-top: 2.2rem; }
+
+/* ============================================================
    IMPRESSÃO — só o receituário
    ============================================================ */
 @media print {

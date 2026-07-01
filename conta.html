@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Minha Conta — Vitalis</title>
+  <meta name="description" content="Área privada Vitalis: os seus resultados, planos de dietas e acompanhamento profissional.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Caveat:wght@600&family=Oswald:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" style="text-decoration:none">
+        <div class="brand-emblem" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="34" height="34">
+            <circle cx="24" cy="24" r="21" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <path d="M24 10 v14 l9 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Vitalis</span>
+          <span class="brand-sub">Instituto de Longevidade</span>
+        </div>
+      </a>
+      <nav class="topnav">
+        <a href="index.html">Início</a>
+        <a href="index.html#avaliacao">Avaliação</a>
+        <a href="conta.html" aria-current="page">A minha conta</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ AUTENTICAÇÃO ============ -->
+  <section class="section section-desk" id="auth-block">
+    <div class="container">
+      <h2 class="section-title light"><span>A sua conta</span></h2>
+      <p class="section-lede">Guarde os seus resultados, acompanhe a evolução e aceda aos planos Vitalis.</p>
+
+      <div class="auth-card">
+        <div class="auth-tabs" role="tablist">
+          <button type="button" class="auth-tab selected" id="tab-entrar" role="tab">Entrar</button>
+          <button type="button" class="auth-tab" id="tab-registar" role="tab">Criar conta</button>
+        </div>
+
+        <form id="form-entrar" autocomplete="on">
+          <div class="field">
+            <label for="login-email">Email</label>
+            <div class="input-well"><input type="email" id="login-email" autocomplete="email" placeholder="o.seu@email.pt" required></div>
+          </div>
+          <div class="field">
+            <label for="login-pass">Palavra-passe</label>
+            <div class="input-well"><input type="password" id="login-pass" autocomplete="current-password" placeholder="••••••••" required></div>
+          </div>
+          <button type="submit" class="btn btn-brass auth-submit"><span class="btn-face">🔑 Entrar</span></button>
+        </form>
+
+        <form id="form-registar" class="hidden" autocomplete="on">
+          <div class="field">
+            <label for="reg-nome">Nome</label>
+            <div class="input-well"><input type="text" id="reg-nome" autocomplete="name" maxlength="60" placeholder="O seu nome" required></div>
+          </div>
+          <div class="field">
+            <label for="reg-email">Email</label>
+            <div class="input-well"><input type="email" id="reg-email" autocomplete="email" placeholder="o.seu@email.pt" required></div>
+          </div>
+          <div class="field">
+            <label for="reg-pass">Palavra-passe <small>(mín. 8 caracteres)</small></label>
+            <div class="input-well"><input type="password" id="reg-pass" autocomplete="new-password" minlength="8" placeholder="••••••••" required></div>
+          </div>
+          <button type="submit" class="btn btn-emerald auth-submit"><span class="btn-face">✒ Criar a minha conta</span></button>
+        </form>
+
+        <p class="form-error hidden" id="auth-error"></p>
+        <p class="auth-mode-note" id="auth-mode-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ÁREA PRIVADA ============ -->
+  <div id="area-privada" class="hidden">
+
+    <section class="section section-velvet">
+      <div class="container">
+        <div class="account-head">
+          <h2 class="section-title light" style="margin-bottom:.2rem"><span id="saudacao">Bem-vindo</span></h2>
+          <button type="button" class="btn btn-ivory btn-sm" id="btn-sair"><span class="btn-face">Sair ⎋</span></button>
+        </div>
+        <p class="section-lede">A sua secção privada: resultados guardados, planos e acompanhamento.</p>
+
+        <div class="private-grid">
+          <div class="gauge-plate">
+            <div class="plate-screw ts-l" aria-hidden="true"></div>
+            <div class="plate-screw ts-r" aria-hidden="true"></div>
+            <div class="plate-screw bs-l" aria-hidden="true"></div>
+            <div class="plate-screw bs-r" aria-hidden="true"></div>
+            <h3 class="plate-title">O meu último resultado</h3>
+            <div id="ultimo-resultado" class="last-result">
+              <p class="empty-note">Ainda não guardou nenhum resultado. <a href="index.html#avaliacao">Faça a avaliação →</a></p>
+            </div>
+          </div>
+          <div class="meters-cabinet">
+            <h3 class="cabinet-title">Histórico de avaliações</h3>
+            <ul class="history-list" id="historico">
+              <li class="empty-note">Sem avaliações guardadas.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOJA DE PLANOS -->
+    <section class="section section-paper">
+      <div class="container">
+        <h2 class="section-title"><span>Planos Vitalis</span></h2>
+        <p class="section-lede">Planos desenhados pela nossa equipa para atacar os pontos fracos do seu score. Tem um cupão? Use-o abaixo.</p>
+
+        <div class="coupon-bar">
+          <div class="input-well coupon-well">
+            <input type="text" id="cupao-input" placeholder="Código do cupão (ex.: VITALIS100)" autocomplete="off">
+          </div>
+          <button type="button" class="btn btn-brass btn-sm" id="btn-cupao"><span class="btn-face">✂ Aplicar cupão</span></button>
+          <span class="coupon-state" id="cupao-estado"></span>
+        </div>
+
+        <div class="shop-grid" id="loja"><!-- construído por JS --></div>
+
+        <!-- OS MEUS PLANOS -->
+        <div class="owned-block">
+          <h3 class="owned-title">🗂 Os meus planos</h3>
+          <div id="minhas-compras">
+            <p class="empty-note">Ainda não tem planos. Escolha um acima — com o cupão certo pode ser gratuito.</p>
+          </div>
+        </div>
+
+        <div class="disclaimer">
+          <p><strong>Nota:</strong> os planos Vitalis são conteúdos educativos de estilo de vida. O <em>acompanhamento profissional</em> é um serviço pago à parte, com nutricionistas e fisiologistas do exercício, e será sempre confirmado por email antes de qualquer cobrança. Nada nesta área substitui o seu médico.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay hidden" id="modal">
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <button type="button" class="modal-close" id="modal-close" aria-label="Fechar">✕</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast"></div>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>© 2026 Vitalis · Instituto de Longevidade — ferramenta educativa, sem fins de diagnóstico.</p>
+      <p class="footer-fineprint"><a href="index.html">← Voltar ao site</a></p>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/conta.js"></script>
+</body>
+</html>
