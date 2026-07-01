@@ -363,9 +363,10 @@
     } catch (err) {
       mostraErro(err.message);
     }
-    $('#auth-mode-note').textContent = VitalisDB.modo === 'demo'
+    $('#auth-mode-note').innerHTML = (VitalisDB.modo === 'demo'
       ? 'Modo demonstração: a conta fica guardada apenas neste navegador. Para contas reais e sincronizadas, o administrador deve configurar o Supabase (instruções no README).'
-      : 'Ligação segura via Supabase — os seus dados são privados e protegidos por Row Level Security.';
+      : 'Ligação segura via Supabase — os seus dados são privados e protegidos por Row Level Security.')
+      + '<br><b>Acesso de teste:</b> utilizador <code>admin</code> · palavra-passe <code>admin</code>';
 
     const user = await VitalisDB.utilizador();
     if (user) await entrou(user);

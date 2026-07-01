@@ -174,5 +174,43 @@ const VitalisDB = (() => {
     },
   };
 
-  return usaSupabase ? supa : demo;
+  /* ---------------- Login temporário de administração ----------------
+     Conta de teste "admin" / "admin": funciona sempre, guarda os dados
+     localmente, e continua a funcionar mesmo com o Supabase ativo.
+     Remover quando o site entrar em produção a sério. */
+  const ADMIN_EMAIL = 'admin@vitalis.local';
+  const sessaoAdmin = () => lsGet('vitalis_sessao', null) === ADMIN_EMAIL;
+
+  async function entrarAdmin() {
+    const users = lsGet('vitalis_users', {});
+    if (!users[ADMIN_EMAIL]) {
+      const salt = novoSalt();
+      users[ADMIN_EMAIL] = { nome: 'Admin', salt, hash: await sha256(salt + 'admin') };
+      lsSet('vitalis_users', users);
+    }
+    lsSet('vitalis_sessao', ADMIN_EMAIL);
+    return { email: ADMIN_EMAIL, nome: 'Admin' };
+  }
+
+  const base = usaSupabase ? supa : demo;
+  const via = () => (sessaoAdmin() ? demo : base);
+
+  return {
+    modo: base.modo,
+    init: () => base.init(),
+    registar: dados => base.registar(dados),
+    async entrar(email, pass) {
+      if (email.trim().toLowerCase() === 'admin' && pass === 'admin') return entrarAdmin();
+      return base.entrar(email, pass);
+    },
+    async sair() {
+      if (sessaoAdmin()) { localStorage.removeItem('vitalis_sessao'); return; }
+      return base.sair();
+    },
+    utilizador: () => via().utilizador(),
+    guardarResultado: r => via().guardarResultado(r),
+    resultados: () => via().resultados(),
+    comprar: c => via().comprar(c),
+    compras: () => via().compras(),
+  };
 })();

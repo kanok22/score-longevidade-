@@ -13,6 +13,6 @@
    ============================================================ */
 
 window.VITALIS_CONFIG = {
-  supabaseUrl: '',      // ex.: 'https://xxxx.supabase.co'
-  supabaseAnonKey: '',  // ex.: 'eyJhbGciOi...'
+  supabaseUrl: 'https://gjvrzibclphamaanatpb.supabase.co',
+  supabaseAnonKey: '',  // colar aqui a chave "anon public" (Settings → API Keys)
 };
