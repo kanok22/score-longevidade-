@@ -141,9 +141,9 @@
     const frac = v => Math.min(1, Math.max(0, (v - minV) / (maxV - minV)));
 
     const jovem = biologica <= cronologica;
-    const corA = jovem ? '#7ce8d8' : '#fdba74';
-    const corB = jovem ? '#2dd4bf' : '#f97316';
-    const glow = jovem ? 'rgba(45,212,191,.45)' : 'rgba(249,115,22,.45)';
+    const corA = jovem ? '#5eead4' : '#fb923c';
+    const corB = jovem ? '#0d9488' : '#ea580c';
+    const glow = jovem ? 'rgba(13,148,136,.35)' : 'rgba(234,88,12,.35)';
 
     // posição do marcador da idade cronológica (anel começa no topo, sentido horário)
     const angC = (-90 + frac(cronologica) * 360) * Math.PI / 180;
@@ -158,14 +158,14 @@
         </linearGradient>
       </defs>
       <circle cx="${GAUGE.cx}" cy="${GAUGE.cy}" r="${GAUGE.r}" fill="none"
-        stroke="rgba(255,255,255,.07)" stroke-width="${GAUGE.w}"/>
+        stroke="rgba(28,22,52,.09)" stroke-width="${GAUGE.w}"/>
       <circle id="gauge-progress" cx="${GAUGE.cx}" cy="${GAUGE.cy}" r="${GAUGE.r}" fill="none"
         stroke="url(#g-ring)" stroke-width="${GAUGE.w}" stroke-linecap="round"
         transform="rotate(-90 ${GAUGE.cx} ${GAUGE.cy})"
         stroke-dasharray="${C}" stroke-dashoffset="${C}"
         style="transition: stroke-dashoffset 1.8s cubic-bezier(.3,1,.4,1); filter: drop-shadow(0 0 12px ${glow});"/>
-      <circle cx="${mx}" cy="${my}" r="7" fill="#fff" opacity=".95"/>
-      <circle cx="${mx}" cy="${my}" r="12" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+      <circle cx="${mx}" cy="${my}" r="7" fill="#201a33" opacity=".95"/>
+      <circle cx="${mx}" cy="${my}" r="12" fill="none" stroke="rgba(32,26,51,.30)" stroke-width="1.5"/>
     `;
     return { minV, maxV, frac, C };
   }
