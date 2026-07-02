@@ -365,7 +365,8 @@
     comprados = new Set(compras.map(c => c.plano_id));
     const alvo = $('#minhas-compras');
 
-    const planosComprados = compras.filter(c => c.categoria !== 'Acompanhamento');
+    const planosComprados = compras.filter(c =>
+      c.categoria !== 'Acompanhamento' && c.categoria !== 'Consultas');
     const acomp = compras.filter(c => c.categoria === 'Acompanhamento');
 
     if (!planosComprados.length) {
@@ -536,6 +537,29 @@
       } catch (err) { toast(err.message); }
     });
   }
+
+  /* ---------------- Consulta sobre terapias emergentes ---------------- */
+  $('#btn-consulta-bio')?.addEventListener('click', () => {
+    abrirModal(`
+      <h3 class="modal-title">👩‍⚕️ Consulta — terapias emergentes</h3>
+      <p>A nossa equipa médica avalia o seu perfil e explica que opções <strong>legais, aprovadas e supervisionadas</strong> fazem sentido para os seus objetivos (composição corporal, metabolismo, recuperação).</p>
+      <p><u>Não vendemos nem indicamos como obter substâncias não aprovadas</u> — esse tipo de compra online é ilegal e perigoso.</p>
+      <p class="modal-price">Primeira avaliação: <strong>gratuita</strong></p>
+      <button type="button" class="btn btn-emerald" id="btn-confirmar-bio"><span class="btn-face">📨 Pedir contacto da equipa</span></button>
+    `);
+    $('#btn-confirmar-bio').addEventListener('click', async () => {
+      try {
+        await VitalisDB.comprar({
+          plano_id: 'consulta-terapias',
+          titulo: 'Consulta — terapias emergentes e suplementação',
+          categoria: 'Consultas', preco: 0, cupao: null,
+        });
+        fecharModal();
+        toast('📨 Pedido enviado. A equipa médica vai contactá-lo por email.');
+        await renderCompras();
+      } catch (err) { toast(err.message); }
+    });
+  });
 
   /* ---------------- Urgência: contagem até à meia-noite ---------------- */
   function iniciarContagem() {
