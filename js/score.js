@@ -258,12 +258,31 @@ const VitalisScore = (() => {
       mente:      { nome: 'Mente',      icone: '☯', score: media([stress, social, prop]) },
     };
 
+    // ---- métricas de funil / projeção ----
+    // anos "recuperáveis": soma dos deltas positivos endereçáveis por estilo de vida
+    const recuperavel = Math.round(
+      regras.filter(r => r.delta > 0).reduce((s, r) => s + r.delta, 0) * 0.8 * 10
+    ) / 10;
+    // score global 0–100 (média dos domínios disponíveis)
+    const scores = Object.values(dominios).map(x => x.score).filter(s => s != null);
+    const scoreGlobal = Math.round(scores.reduce((s, v) => s + v, 0) / scores.length);
+    // ritmo de envelhecimento (1.00 = em linha com o calendário)
+    const ritmo = Math.round((idadeBio / d.idade) * 100) / 100;
+    // projeção a 10 anos: manter hábitos vs. seguir o plano
+    const projSem = Math.round((idadeBio + 10 * Math.max(1, ritmo)) * 10) / 10;
+    const projCom = Math.round((idadeBio + 10 - Math.min(recuperavel, 8)) * 10) / 10;
+
     return {
       idadeCronologica: d.idade,
       idadeBiologica: idadeBio,
       delta: Math.round((idadeBio - d.idade) * 10) / 10,
       imc: Math.round(imc.imc * 10) / 10,
       dominios,
+      scoreGlobal,
+      ritmo,
+      recuperavel,
+      projSem,
+      projCom,
       dados: d,
     };
   }

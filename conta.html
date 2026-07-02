@@ -53,7 +53,10 @@
           </div>
           <div class="field">
             <label for="login-pass">Palavra-passe</label>
-            <div class="input-well"><input type="password" id="login-pass" autocomplete="current-password" placeholder="••••••••" required></div>
+            <div class="input-well pass-well">
+              <input type="password" id="login-pass" autocomplete="current-password" placeholder="••••••••" required>
+              <button type="button" class="pass-eye" data-target="login-pass" aria-label="Mostrar palavra-passe">👁</button>
+            </div>
           </div>
           <button type="submit" class="btn btn-brass auth-submit"><span class="btn-face">🔑 Entrar</span></button>
         </form>
@@ -69,7 +72,10 @@
           </div>
           <div class="field">
             <label for="reg-pass">Palavra-passe <small>(mín. 8 caracteres)</small></label>
-            <div class="input-well"><input type="password" id="reg-pass" autocomplete="new-password" minlength="8" placeholder="••••••••" required></div>
+            <div class="input-well pass-well">
+              <input type="password" id="reg-pass" autocomplete="new-password" minlength="8" placeholder="••••••••" required>
+              <button type="button" class="pass-eye" data-target="reg-pass" aria-label="Mostrar palavra-passe">👁</button>
+            </div>
           </div>
           <button type="submit" class="btn btn-emerald auth-submit"><span class="btn-face">✒ Criar a minha conta</span></button>
         </form>
@@ -113,10 +119,25 @@
     </section>
 
     <!-- LOJA DE PLANOS -->
-    <section class="section section-paper">
-      <div class="container">
+    <section class="section section-paper" id="loja-sec">
+      <div class="container" id="loja-anchor">
         <h2 class="section-title"><span>Planos Vitalis</span></h2>
-        <p class="section-lede">Planos desenhados pela nossa equipa para atacar os pontos fracos do seu score. Tem um cupão? Use-o abaixo.</p>
+        <p class="section-lede">Programas desenhados para atacar os pontos fracos do seu score — os recomendados para si aparecem primeiro.</p>
+
+        <!-- urgência -->
+        <div class="promo-banner" id="promo-banner">
+          <span class="promo-flame">⚡</span>
+          <span>Oferta de lançamento: cupão <code>VITALIS100</code> dá <b>100% de desconto</b> em todos os programas</span>
+          <span class="promo-count" id="promo-count">—:—:—</span>
+        </div>
+
+        <!-- prova social (substituir por testemunhos reais quando existirem) -->
+        <div class="proof-strip">
+          <div class="proof-rating"><b>4,9★</b><span>satisfação média dos membros</span></div>
+          <div class="proof-quote">“Recuperei 3 anos no score em 4 meses.”<span>— Carla, 51</span></div>
+          <div class="proof-quote">“O protocolo de sono mudou-me os dias.”<span>— Miguel, 44</span></div>
+          <div class="proof-quote">“Finalmente um plano que consigo seguir.”<span>— Rui, 58</span></div>
+        </div>
 
         <div class="coupon-bar">
           <div class="input-well coupon-well">

@@ -9,7 +9,19 @@
   /* ---------------- Catálogo de planos ---------------- */
   const PLANOS = [
     {
-      id: 'dieta-mediterranica', categoria: 'Dietas', icone: '🫒', preco: 29,
+      id: 'pacote-completo', categoria: 'Pacotes', icone: '👑', preco: 49, precoAntigo: 96,
+      destaque: 'Melhor valor · poupa 47 €',
+      titulo: 'Pacote Vitalis Completo',
+      desc: 'Os 4 programas (dietas, sono e força) + reavaliações ilimitadas do score. Tudo o que precisa para atacar todos os domínios de uma vez.',
+      inclui: ['dieta-mediterranica', 'dieta-antiinflamatoria', 'protocolo-sono', 'forca-longevidade'],
+      conteudo: [
+        'Acesso imediato aos 4 programas Vitalis completos.',
+        'Ordem sugerida: comece pelo programa recomendado no seu resultado, adicione o segundo à 3.ª semana.',
+        'Reavalie o seu score a cada 4 semanas para medir o progresso.',
+      ],
+    },
+    {
+      id: 'dieta-mediterranica', categoria: 'Dietas', icone: '🫒', preco: 29, precoAntigo: 49,
       titulo: 'Dieta Mediterrânica — 12 semanas',
       desc: 'Plano alimentar completo com menus semanais, lista de compras e receitas rápidas. O padrão com mais evidência em longevidade.',
       conteudo: [
@@ -22,7 +34,7 @@
       ],
     },
     {
-      id: 'dieta-antiinflamatoria', categoria: 'Dietas', icone: '🥗', preco: 24,
+      id: 'dieta-antiinflamatoria', categoria: 'Dietas', icone: '🥗', preco: 24, precoAntigo: 39,
       titulo: 'Dieta Anti-inflamatória — 8 semanas',
       desc: 'Protocolo para baixar a inflamação de base: especiarias, ómega-3, fibra fermentável e corte de ultraprocessados.',
       conteudo: [
@@ -33,7 +45,7 @@
       ],
     },
     {
-      id: 'protocolo-sono', categoria: 'Sono', icone: '☾', preco: 19,
+      id: 'protocolo-sono', categoria: 'Sono', icone: '☾', preco: 19, precoAntigo: 34,
       titulo: 'Protocolo de Sono Profundo — 6 semanas',
       desc: 'Rotina noturna, gestão de luz e cafeína, e técnica de descompressão para dormir 7–8h de qualidade.',
       conteudo: [
@@ -44,7 +56,7 @@
       ],
     },
     {
-      id: 'forca-longevidade', categoria: 'Movimento', icone: '🏋', preco: 24,
+      id: 'forca-longevidade', categoria: 'Movimento', icone: '🏋', preco: 24, precoAntigo: 39,
       titulo: 'Programa de Força Longevidade — 10 semanas',
       desc: 'Treino de força progressivo, 2–3 sessões semanais, pensado para preservar músculo e osso depois dos 40.',
       conteudo: [
@@ -60,7 +72,20 @@
     'VITALIS100': { desconto: 100, nota: 'Oferta de lançamento — 100% de desconto' },
   };
 
-  const ACOMPANHAMENTO = { preco: 49, unidade: '€/mês' };
+  /* Escada de valor do acompanhamento profissional */
+  const TIERS_ACOMP = [
+    { id: 'essencial', nome: 'Essencial', preco: 29, desc: 'Mensagens ilimitadas com o seu profissional + revisão mensal do plano.' },
+    { id: 'premium', nome: 'Premium', preco: 49, popular: true, desc: 'Tudo do Essencial + videochamada mensal de 30 min + ajustes quinzenais.' },
+    { id: 'elite', nome: 'Elite', preco: 89, desc: 'Tudo do Premium + videochamada semanal + plano 100% construído à medida.' },
+  ];
+
+  const DOMINIO_PLANO = {
+    coracao: 'dieta-mediterranica', metabolismo: 'dieta-antiinflamatoria',
+    nutricao: 'dieta-mediterranica', movimento: 'forca-longevidade',
+    sono: 'protocolo-sono', mente: 'protocolo-sono',
+  };
+  let recomendados = [];
+  try { recomendados = JSON.parse(localStorage.getItem('vitalis_recomendados')) || []; } catch {}
 
   let cupaoAtivo = null;
 
@@ -107,6 +132,17 @@
     $('#form-registar').classList.remove('hidden');
     $('#form-entrar').classList.add('hidden');
     authError.classList.add('hidden');
+  });
+
+  /* Mostrar/ocultar palavra-passe */
+  document.querySelectorAll('.pass-eye').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById(btn.dataset.target);
+      const mostrar = input.type === 'password';
+      input.type = mostrar ? 'text' : 'password';
+      btn.textContent = mostrar ? '🙈' : '👁';
+      btn.setAttribute('aria-label', mostrar ? 'Ocultar palavra-passe' : 'Mostrar palavra-passe');
+    });
   });
 
   $('#form-entrar').addEventListener('submit', async e => {
@@ -172,6 +208,20 @@
 
     const ult = lista[0].dados;
     const boa = ult.delta <= 0;
+
+    // recalcular recomendações a partir dos domínios mais fracos
+    if (ult.dominios) {
+      const fracos = Object.entries(ult.dominios)
+        .filter(([, s]) => s != null)
+        .sort((a, b) => a[1] - b[1]);
+      const recs = [];
+      for (const [k] of fracos) {
+        const id = DOMINIO_PLANO[k];
+        if (id && !recs.includes(id)) recs.push(id);
+        if (recs.length === 2) break;
+      }
+      if (recs.length) recomendados = recs;
+    }
     alvo.innerHTML = `
       <div class="last-numbers">
         <div class="cmp-box"><span class="cmp-label">Idade biológica</span>
@@ -203,24 +253,37 @@
 
   let comprados = new Set();
 
+  function ordenarLoja() {
+    // recomendados primeiro, pacote logo a seguir, resto pela ordem original
+    return [...PLANOS].sort((a, b) => {
+      const pa = recomendados.includes(a.id) ? 0 : a.id === 'pacote-completo' ? 1 : 2;
+      const pb = recomendados.includes(b.id) ? 0 : b.id === 'pacote-completo' ? 1 : 2;
+      return pa - pb;
+    });
+  }
+
   function renderLoja() {
     const loja = $('#loja');
-    loja.innerHTML = PLANOS.map(p => {
+    loja.innerHTML = ordenarLoja().map(p => {
       const final = precoFinal(p);
       const tem = comprados.has(p.id);
+      const rec = recomendados.includes(p.id);
+      const anchor = p.precoAntigo && p.precoAntigo > p.preco ? `<s>${p.precoAntigo} €</s> ` : '';
       return `
-      <article class="shop-card ${tem ? 'owned' : ''}">
+      <article class="shop-card ${tem ? 'owned' : ''} ${rec ? 'recommended' : ''} ${p.destaque ? 'featured' : ''}">
+        ${rec ? '<span class="rec-badge">✦ Recomendado para si</span>' : ''}
+        ${!rec && p.destaque ? `<span class="rec-badge gold">${p.destaque}</span>` : ''}
         <div class="shop-stamp">${p.icone}</div>
         <span class="shop-cat">${p.categoria}</span>
         <h4>${p.titulo}</h4>
         <p>${p.desc}</p>
         <div class="shop-buy">
           <span class="price-tag ${final === 0 ? 'free' : ''}">
-            ${final < p.preco ? `<s>${p.preco} €</s> ` : ''}${eur(final)}
+            ${final < p.preco ? `<s>${p.preco} €</s> ` : anchor}${eur(final)}
           </span>
           ${tem
             ? `<span class="owned-badge">✔ Na sua conta</span>`
-            : `<button type="button" class="btn btn-emerald btn-sm" data-comprar="${p.id}">
+            : `<button type="button" class="btn ${rec || p.destaque ? 'btn-brass' : 'btn-emerald'} btn-sm" data-comprar="${p.id}">
                  <span class="btn-face">${final === 0 ? '🎁 Obter grátis' : '🛒 Comprar'}</span>
                </button>`}
         </div>
@@ -250,6 +313,19 @@
         plano_id: p.id, titulo: p.titulo, categoria: p.categoria,
         preco: final, cupao: cupaoAtivo ? cupaoAtivo.codigo : null,
       });
+      // pacote: desbloqueia também os programas incluídos
+      if (p.inclui) {
+        for (const incId of p.inclui) {
+          if (comprados.has(incId)) continue;
+          const inc = PLANOS.find(x => x.id === incId);
+          try {
+            await VitalisDB.comprar({
+              plano_id: inc.id, titulo: inc.titulo, categoria: inc.categoria,
+              preco: 0, cupao: `PACOTE`,
+            });
+          } catch { /* já existente — segue */ }
+        }
+      }
       toast(`🎉 "${p.titulo}" foi adicionado aos seus planos.`);
       await renderCompras();
       renderLoja();
@@ -308,7 +384,7 @@
               ${pedida
                 ? `<span class="owned-badge">✔ Acompanhamento pedido</span>`
                 : `<button type="button" class="btn btn-brass btn-sm" data-acomp="${c.plano_id}">
-                     <span class="btn-face">👩‍⚕️ Acompanhamento · ${ACOMPANHAMENTO.preco}${ACOMPANHAMENTO.unidade}</span>
+                     <span class="btn-face">👩‍⚕️ Acompanhamento · desde ${TIERS_ACOMP[0].preco} €/mês</span>
                    </button>`}
             </div>
           </div>`;
@@ -338,23 +414,60 @@
     const p = PLANOS.find(x => x.id === planoId);
     abrirModal(`
       <h3 class="modal-title">👩‍⚕️ Acompanhamento profissional</h3>
-      <p>Sessões mensais com um dos nossos <strong>nutricionistas ou fisiologistas do exercício</strong>, que adaptam o plano <em>${p.titulo}</em> a si e acompanham a sua evolução.</p>
-      <p class="modal-price">Serviço pago à parte: <strong>${ACOMPANHAMENTO.preco} ${ACOMPANHAMENTO.unidade}</strong></p>
-      <p>Ao enviar o pedido, a nossa equipa entra em contacto por email para agendar a primeira sessão. <u>Nenhum pagamento é cobrado antes dessa confirmação.</u></p>
-      <button type="button" class="btn btn-emerald" id="btn-confirmar-acomp"><span class="btn-face">📨 Enviar pedido</span></button>
+      <p>Um dos nossos <strong>nutricionistas ou fisiologistas do exercício</strong> adapta o plano <em>${p.titulo}</em> a si e acompanha a sua evolução. Escolha o nível:</p>
+      <div class="tier-list">
+        ${TIERS_ACOMP.map(t => `
+          <button type="button" class="tier ${t.popular ? 'popular' : ''}" data-tier="${t.id}">
+            ${t.popular ? '<span class="tier-flag">Mais escolhido</span>' : ''}
+            <span class="tier-nome">${t.nome}</span>
+            <span class="tier-preco">${t.preco} €<small>/mês</small></span>
+            <span class="tier-desc">${t.desc}</span>
+          </button>`).join('')}
+      </div>
+      <p class="modal-note">Ao enviar o pedido, a nossa equipa entra em contacto por email para agendar a primeira sessão. <u>Nenhum pagamento é cobrado antes dessa confirmação.</u></p>
+      <button type="button" class="btn btn-emerald" id="btn-confirmar-acomp" disabled><span class="btn-face">📨 Enviar pedido</span></button>
     `);
+    let tierEscolhido = null;
+    document.querySelectorAll('.tier').forEach(el => {
+      el.addEventListener('click', () => {
+        document.querySelectorAll('.tier').forEach(x => x.classList.remove('selected'));
+        el.classList.add('selected');
+        tierEscolhido = TIERS_ACOMP.find(t => t.id === el.dataset.tier);
+        $('#btn-confirmar-acomp').disabled = false;
+      });
+    });
     $('#btn-confirmar-acomp').addEventListener('click', async () => {
+      if (!tierEscolhido) return;
       try {
         await VitalisDB.comprar({
-          plano_id: `acomp-${planoId}`, titulo: `Acompanhamento — ${p.titulo}`,
-          categoria: 'Acompanhamento', preco: ACOMPANHAMENTO.preco, cupao: null,
+          plano_id: `acomp-${planoId}`,
+          titulo: `Acompanhamento ${tierEscolhido.nome} — ${p.titulo}`,
+          categoria: 'Acompanhamento', preco: tierEscolhido.preco, cupao: null,
         });
         fecharModal();
-        toast('📨 Pedido enviado. A nossa equipa vai contactá-lo por email.');
+        toast(`📨 Pedido ${tierEscolhido.nome} enviado. A nossa equipa vai contactá-lo por email.`);
         await renderCompras();
       } catch (err) { toast(err.message); }
     });
   }
+
+  /* ---------------- Urgência: contagem até à meia-noite ---------------- */
+  function iniciarContagem() {
+    const alvo = $('#promo-count');
+    if (!alvo) return;
+    const tick = () => {
+      const agora = new Date();
+      const fim = new Date(agora); fim.setHours(23, 59, 59, 999);
+      const ms = fim - agora;
+      const h = String(Math.floor(ms / 3600000)).padStart(2, '0');
+      const m = String(Math.floor(ms / 60000) % 60).padStart(2, '0');
+      const s = String(Math.floor(ms / 1000) % 60).padStart(2, '0');
+      alvo.textContent = `termina em ${h}:${m}:${s}`;
+    };
+    tick();
+    setInterval(tick, 1000);
+  }
+  iniciarContagem();
 
   /* ---------------- Arranque ---------------- */
   (async () => {

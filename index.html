@@ -30,8 +30,8 @@
       <nav class="topnav">
         <a href="#como-funciona">Como funciona</a>
         <a href="#avaliacao">Avaliação</a>
-        <a href="#resultados" id="nav-resultados" class="nav-disabled">Resultados</a>
-        <a href="#plano" id="nav-plano" class="nav-disabled">Plano</a>
+        <a href="#painel" id="nav-resultados" class="nav-disabled" data-panel="p-resultados">Resultados</a>
+        <a href="#painel" id="nav-plano" class="nav-disabled" data-panel="p-plano">Plano</a>
         <a href="conta.html">A minha conta</a>
       </nav>
     </div>
@@ -390,11 +390,18 @@
     </div>
   </section>
 
-  <!-- ============ RESULTADOS ============ -->
-  <section class="section section-velvet hidden" id="resultados">
+  <!-- ============ PAINEL DE RESULTADOS (separadores) ============ -->
+  <section class="section hidden" id="painel">
     <div class="container">
-      <h2 class="section-title light reveal"><span>Os seus resultados</span></h2>
+      <h2 class="section-title reveal"><span>Os seus resultados</span></h2>
 
+      <div class="panel-tabs" role="tablist" id="panel-tabs">
+        <button type="button" class="panel-tab active" data-panel="p-resultados" role="tab">📊 Score</button>
+        <button type="button" class="panel-tab" data-panel="p-plano" role="tab">📋 Plano</button>
+        <button type="button" class="panel-tab" data-panel="p-oferta" role="tab">✦ Programas</button>
+      </div>
+
+      <div class="panel active" id="p-resultados">
       <div class="results-grid">
         <!-- Mostrador principal -->
         <div class="gauge-plate reveal">
@@ -438,17 +445,34 @@
         </div>
       </div>
 
+      <!-- métricas de projeção -->
+      <div class="stats-bento reveal">
+        <div class="hero-tile">
+          <span class="tile-num" id="stat-global">—</span>
+          <span class="tile-label">Score Vitalis global (0–100)</span>
+        </div>
+        <div class="hero-tile">
+          <span class="tile-num" id="stat-ritmo">—</span>
+          <span class="tile-label">ritmo de envelhecimento (1,00 = normal)</span>
+        </div>
+        <div class="hero-tile accent">
+          <span class="tile-num" id="stat-recuperavel">—</span>
+          <span class="tile-label">anos que pode recuperar com o plano certo</span>
+        </div>
+        <div class="hero-tile wide" id="stat-proj-tile">
+          <span class="tile-num" id="stat-proj">—</span>
+          <span class="tile-label" id="stat-proj-label">projeção da idade biológica daqui a 10 anos</span>
+        </div>
+      </div>
+
       <div class="results-actions reveal">
         <a href="conta.html" class="btn btn-ivory"><span class="btn-face">💾 Guardar na minha conta</span></a>
       </div>
-    </div>
-  </section>
+      </div><!-- /p-resultados -->
 
-  <!-- ============ PLANO TERAPÊUTICO ============ -->
-  <section class="section section-paper hidden" id="plano">
-    <div class="container">
-      <h2 class="section-title reveal"><span>O seu plano terapêutico</span></h2>
-      <p class="section-lede reveal" id="plano-lede"></p>
+      <!-- ============ PLANO TERAPÊUTICO ============ -->
+      <div class="panel" id="p-plano">
+      <p class="section-lede" id="plano-lede"></p>
 
       <div class="rx-pad reveal">
         <div class="rx-header">
@@ -466,6 +490,34 @@
           <button type="button" class="btn btn-brass btn-sm" id="btn-restart"><span class="btn-face">↺ Repetir avaliação</span></button>
         </div>
       </div>
+
+      </div><!-- /p-plano -->
+
+      <!-- OFERTA RECOMENDADA (funil) -->
+      <div class="panel" id="p-oferta">
+      <div class="offer-card" id="oferta">
+        <div class="offer-head">
+          <span class="offer-kicker">✦ Recomendado para o seu perfil</span>
+          <h3 id="oferta-titulo">O seu programa personalizado</h3>
+          <p id="oferta-sub">Com base nos seus pontos fracos, estes são os programas com maior impacto estimado no seu score.</p>
+        </div>
+        <div class="offer-plans" id="oferta-planos"><!-- construído por JS --></div>
+        <div class="offer-bundle" id="oferta-bundle">
+          <div class="bundle-info">
+            <span class="bundle-badge">Melhor valor</span>
+            <strong>Pacote Vitalis Completo</strong>
+            <span class="bundle-desc">Os 4 programas + reavaliações ilimitadas</span>
+          </div>
+          <div class="bundle-price">
+            <s>96 €</s><b>49 €</b>
+          </div>
+        </div>
+        <div class="offer-cta">
+          <a href="conta.html#loja" class="btn btn-brass btn-lg"><span class="btn-face">Desbloquear o meu programa →</span></a>
+          <span class="offer-note">Cupão de lançamento <code>VITALIS100</code> disponível por tempo limitado</span>
+        </div>
+      </div>
+      </div><!-- /p-oferta -->
 
       <div class="disclaimer reveal">
         <p><strong>Aviso importante:</strong> o Score Vitalis é uma ferramenta educativa de auto-conhecimento, inspirada em fatores de risco descritos na literatura científica. <u>Não é um dispositivo médico, não faz diagnósticos e não substitui a avaliação de um profissional de saúde.</u> Consulte o seu médico antes de alterar medicação, dieta ou exercício, sobretudo se tiver doenças crónicas.</p>
