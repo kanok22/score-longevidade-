@@ -1,8 +1,8 @@
 # Vitalis — Score de Longevidade & Idade Biológica
 
-Site interativo, com design **skeuomórfico** (latão, couro, papel e madeira), que estima a
-**idade biológica** através de um score multi-variável e gera um **plano terapêutico
-personalizado** para melhorar o resultado.
+Site interativo com design **glassmorphism escuro** (painéis de vidro fosco, bento grids,
+minimalismo, acentos laranja/teal), que estima a **idade biológica** através de um score
+multi-variável e gera um **plano terapêutico personalizado** para melhorar o resultado.
 
 ## Como usar
 
@@ -13,8 +13,8 @@ Todos os cálculos são feitos localmente; nenhum dado sai do dispositivo.
 
 - **Questionário guiado em 6 passos**: perfil, corpo, movimento, sono & mente, nutrição e
   análises clínicas (opcionais) — mais de 20 variáveis.
-- **Idade biológica estimada** apresentada num mostrador analógico de latão com ponteiro
-  animado, comparada com a idade cronológica.
+- **Idade biológica estimada** apresentada num anel de progresso animado (teal se mais
+  jovem, laranja se mais velho), com marcador da idade cronológica.
 - **6 sub-scores (0–100)** em vu-meters: Coração, Metabolismo, Movimento, Sono, Nutrição e Mente.
 - **Plano terapêutico priorizado** em formato de receituário, com metas concretas por
   intervenção (máx. 7, ordenadas por impacto estimado), imprimível.

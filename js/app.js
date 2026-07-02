@@ -114,126 +114,50 @@
   });
   btnPrev.addEventListener('click', () => showStep(Math.max(current - 1, 0)));
 
-  /* ---------- Mostrador: relógio de bolso (SVG) ---------- */
-  const GAUGE = {
-    cx: 200, cy: 200, r: 166,
-    start: 135, sweep: 270, // graus (0° = eixo x positivo, sentido horário)
-  };
-
-  function polar(angDeg, r) {
-    const a = angDeg * Math.PI / 180;
-    return [GAUGE.cx + r * Math.cos(a), GAUGE.cy + r * Math.sin(a)];
-  }
-
-  function arcPath(a0, a1, r) {
-    const [x0, y0] = polar(a0, r);
-    const [x1, y1] = polar(a1, r);
-    const large = (a1 - a0) > 180 ? 1 : 0;
-    return `M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`;
-  }
+  /* ---------- Mostrador: anel de progresso (SVG) ---------- */
+  const GAUGE = { cx: 200, cy: 200, r: 158, w: 18 };
 
   function construirGauge(minV, maxV, cronologica, biologica) {
     const svg = $('#bio-gauge');
-    const val2ang = v =>
-      GAUGE.start + GAUGE.sweep * Math.min(1, Math.max(0, (v - minV) / (maxV - minV)));
+    const C = 2 * Math.PI * GAUGE.r;
+    const frac = v => Math.min(1, Math.max(0, (v - minV) / (maxV - minV)));
 
-    let html = `
+    const jovem = biologica <= cronologica;
+    const corA = jovem ? '#7ce8d8' : '#fdba74';
+    const corB = jovem ? '#2dd4bf' : '#f97316';
+    const glow = jovem ? 'rgba(45,212,191,.45)' : 'rgba(249,115,22,.45)';
+
+    // posição do marcador da idade cronológica (anel começa no topo, sentido horário)
+    const angC = (-90 + frac(cronologica) * 360) * Math.PI / 180;
+    const mx = GAUGE.cx + GAUGE.r * Math.cos(angC);
+    const my = GAUGE.cy + GAUGE.r * Math.sin(angC);
+
+    svg.innerHTML = `
       <defs>
-        <radialGradient id="g-face" cx="50%" cy="40%" r="75%">
-          <stop offset="0%" stop-color="#fffef8"/>
-          <stop offset="72%" stop-color="#f6edd8"/>
-          <stop offset="100%" stop-color="#e2d4b2"/>
-        </radialGradient>
-        <linearGradient id="g-bezel" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#f6e09c"/>
-          <stop offset="50%" stop-color="#c9a34a"/>
-          <stop offset="100%" stop-color="#8a6a24"/>
-        </linearGradient>
-        <linearGradient id="g-glass" x1="0" y1="0" x2=".55" y2="1">
-          <stop offset="0%" stop-color="rgba(255,255,255,.45)"/>
-          <stop offset="48%" stop-color="rgba(255,255,255,0)"/>
+        <linearGradient id="g-ring" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="${corA}"/>
+          <stop offset="100%" stop-color="${corB}"/>
         </linearGradient>
       </defs>
-      <circle cx="${GAUGE.cx}" cy="${GAUGE.cy}" r="184" fill="url(#g-bezel)" stroke="#5c4413" stroke-width="2"/>
-      <circle cx="${GAUGE.cx}" cy="${GAUGE.cy}" r="171" fill="none" stroke="#8a6a24" stroke-width="2" opacity=".8"/>
-      <circle cx="${GAUGE.cx}" cy="${GAUGE.cy}" r="${GAUGE.r}" fill="url(#g-face)" stroke="#b7a473" stroke-width="1.2"/>
-      <circle cx="${GAUGE.cx}" cy="${GAUGE.cy}" r="159" fill="none" stroke="#8a7550" stroke-width=".7" opacity=".6"/>
+      <circle cx="${GAUGE.cx}" cy="${GAUGE.cy}" r="${GAUGE.r}" fill="none"
+        stroke="rgba(255,255,255,.07)" stroke-width="${GAUGE.w}"/>
+      <circle id="gauge-progress" cx="${GAUGE.cx}" cy="${GAUGE.cy}" r="${GAUGE.r}" fill="none"
+        stroke="url(#g-ring)" stroke-width="${GAUGE.w}" stroke-linecap="round"
+        transform="rotate(-90 ${GAUGE.cx} ${GAUGE.cy})"
+        stroke-dasharray="${C}" stroke-dashoffset="${C}"
+        style="transition: stroke-dashoffset 1.8s cubic-bezier(.3,1,.4,1); filter: drop-shadow(0 0 12px ${glow});"/>
+      <circle cx="${mx}" cy="${my}" r="7" fill="#fff" opacity=".95"/>
+      <circle cx="${mx}" cy="${my}" r="12" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
     `;
-
-    // marcações finas (estilo minute track) e numerais em serifa
-    const nMaior = 10;
-    for (let i = 0; i <= nMaior; i++) {
-      const f = i / nMaior;
-      const ang = GAUGE.start + GAUGE.sweep * f;
-      const [x0, y0] = polar(ang, 158);
-      const [x1, y1] = polar(ang, 146);
-      html += `<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="#4a3a22" stroke-width="2.2"/>`;
-      const val = Math.round(minV + (maxV - minV) * f);
-      const [tx, ty] = polar(ang, 130);
-      html += `<text x="${tx}" y="${ty}" text-anchor="middle" dominant-baseline="middle"
-        font-family="'Playfair Display', Georgia, serif" font-weight="600"
-        font-size="18" fill="#3e2f1c">${val}</text>`;
-      if (i < nMaior) {
-        for (let s = 1; s < 5; s++) {
-          const fa = GAUGE.start + GAUGE.sweep * (f + s / (5 * nMaior));
-          const [sx0, sy0] = polar(fa, 158);
-          const [sx1, sy1] = polar(fa, 152);
-          html += `<line x1="${sx0}" y1="${sy0}" x2="${sx1}" y2="${sy1}" stroke="#8a7550" stroke-width="1"/>`;
-        }
-      }
-    }
-
-    // marca do fabricante
-    html += `
-      <text x="${GAUGE.cx}" y="${GAUGE.cy - 52}" text-anchor="middle"
-        font-family="Oswald, sans-serif" font-size="12" letter-spacing="5" fill="#9a8358">VITALIS</text>
-      <text x="${GAUGE.cx}" y="${GAUGE.cy - 36}" text-anchor="middle"
-        font-family="Oswald, sans-serif" font-size="7.5" letter-spacing="3" fill="#b0996a">IDADE BIOLÓGICA</text>
-    `;
-
-    // marcador da idade cronológica (losango discreto)
-    const angC = val2ang(cronologica);
-    const [mx, my] = polar(angC, 143);
-    html += `
-      <g transform="rotate(${angC + 90} ${mx} ${my})">
-        <path d="M ${mx} ${my - 7} L ${mx + 5} ${my} L ${mx} ${my + 7} L ${mx - 5} ${my} Z"
-          fill="#c9a34a" stroke="#7a5c1e" stroke-width="1"/>
-      </g>
-    `;
-
-    // arco cronológica → biológica (desenha-se com o ponteiro)
-    const angB = val2ang(biologica);
-    if (Math.abs(angB - angC) > 0.5) {
-      const cor = biologica <= cronologica ? '#3f8f5f' : '#b6473a';
-      const a0 = Math.min(angC, angB), a1 = Math.max(angC, angB);
-      html += `<path id="delta-arc" d="${arcPath(a0, a1, 152)}" fill="none"
-        stroke="${cor}" stroke-width="5" stroke-linecap="round" pathLength="1"
-        style="stroke-dasharray:1; stroke-dashoffset:1; transition: stroke-dashoffset 1.8s cubic-bezier(.3,1,.4,1);"/>`;
-    }
-
-    // ponteiro estilo Breguet (aço azulado) + eixo + vidro
-    html += `
-      <g id="gauge-needle" style="transform-origin:${GAUGE.cx}px ${GAUGE.cy}px; transform: rotate(${GAUGE.start}deg); transition: transform 1.8s cubic-bezier(.3,1.4,.4,1);">
-        <polygon points="${GAUGE.cx - 18},${GAUGE.cy - 3} ${GAUGE.cx + 86},${GAUGE.cy - 1.7} ${GAUGE.cx + 86},${GAUGE.cy + 1.7} ${GAUGE.cx - 18},${GAUGE.cy + 3}" fill="#2f3d58"/>
-        <circle cx="${GAUGE.cx + 94}" cy="${GAUGE.cy}" r="6.5" fill="none" stroke="#2f3d58" stroke-width="3.2"/>
-        <polygon points="${GAUGE.cx + 101.5},${GAUGE.cy - 1.6} ${GAUGE.cx + 124},${GAUGE.cy} ${GAUGE.cx + 101.5},${GAUGE.cy + 1.6}" fill="#2f3d58"/>
-      </g>
-      <circle cx="${GAUGE.cx}" cy="${GAUGE.cy}" r="9" fill="url(#g-bezel)" stroke="#5c4413" stroke-width="1.2"/>
-      <circle cx="${GAUGE.cx - 2.5}" cy="${GAUGE.cy - 3}" r="2.6" fill="rgba(255,255,255,.6)"/>
-      <ellipse cx="150" cy="118" rx="118" ry="72" fill="url(#g-glass)" transform="rotate(-18 150 118)" pointer-events="none"/>
-    `;
-    svg.innerHTML = html;
-    return { minV, maxV, val2ang };
+    return { minV, maxV, frac, C };
   }
 
   function apontarGauge(escala, valor) {
-    const ang = escala.val2ang(valor);
-    const needle = $('#gauge-needle');
-    const arc = $('#delta-arc');
+    const prog = $('#gauge-progress');
+    const alvo = escala.C * (1 - escala.frac(valor));
     // pequeno atraso para a transição disparar depois de renderizar
     requestAnimationFrame(() => requestAnimationFrame(() => {
-      needle.style.transform = `rotate(${ang}deg)`;
-      if (arc) arc.style.strokeDashoffset = '0';
+      prog.style.strokeDashoffset = String(alvo);
     }));
   }
 
