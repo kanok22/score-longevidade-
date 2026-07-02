@@ -89,6 +89,15 @@
 
   let cupaoAtivo = null;
 
+  /* ---------------- Barra de progresso de scroll ---------------- */
+  const spb = document.createElement('div');
+  spb.className = 'scroll-progress';
+  document.body.appendChild(spb);
+  addEventListener('scroll', () => {
+    const h = document.documentElement;
+    spb.style.width = `${(h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) * 100}%`;
+  }, { passive: true });
+
   /* ---------------- UI utilitários ---------------- */
   function toast(msg) {
     const t = $('#toast');
@@ -401,13 +410,90 @@
   function verPlano(id) {
     const p = PLANOS.find(x => x.id === id);
     if (!p) return;
-    abrirModal(`
-      <h3 class="modal-title">${p.icone} ${p.titulo}</h3>
-      <ol class="plan-steps">
-        ${p.conteudo.map(l => `<li>${l}</li>`).join('')}
-      </ol>
-      <p class="modal-note">Guarde este plano: está sempre disponível em "Os meus planos". Para o adaptar a si, considere o acompanhamento profissional.</p>
-    `);
+    abrirLivro(p);
+  }
+
+  /* ---------------- Caderno 3D com folhas que viram ---------------- */
+  function abrirLivro(p) {
+    const paginas = [
+      { tipo: 'capa' },
+      ...p.conteudo.map((txt, i) => ({ tipo: 'passo', n: i + 1, txt })),
+      { tipo: 'fim' },
+    ];
+
+    const overlay = document.createElement('div');
+    overlay.className = 'book-overlay';
+    overlay.innerHTML = `
+      <button type="button" class="book-close" aria-label="Fechar">✕</button>
+      <div class="book-scene">
+        <div class="book">
+          <div class="book-spine" aria-hidden="true"></div>
+          ${paginas.map((pg, i) => `
+            <div class="bpage" data-i="${i}">
+              <div class="bp-face bp-front">
+                ${pg.tipo === 'capa' ? `
+                  <div class="bp-cover">
+                    <div class="bp-cover-frame">
+                      <span class="bp-cover-icon">${p.icone}</span>
+                      <h4>${p.titulo}</h4>
+                      <span class="bp-cover-cat">${p.categoria} · Instituto Vitalis</span>
+                      <span class="bp-cover-hint">toque para abrir ➔</span>
+                    </div>
+                  </div>` : pg.tipo === 'fim' ? `
+                  <div class="bp-paper bp-end">
+                    <p class="bp-hand">Boa jornada!</p>
+                    <p class="bp-txt">Guarde este caderno — está sempre disponível em «Os meus planos». Reavalie o seu score a cada 4 semanas para medir o progresso.</p>
+                    <p class="bp-sign">— Equipa Vitalis ✦</p>
+                  </div>` : `
+                  <div class="bp-paper">
+                    <span class="bp-step">Passo ${pg.n} de ${p.conteudo.length}</span>
+                    <p class="bp-txt">${pg.txt}</p>
+                    <span class="bp-check">☐ feito</span>
+                    <span class="bp-pagenum">${pg.n}</span>
+                  </div>`}
+              </div>
+              <div class="bp-face bp-back"></div>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div class="book-nav">
+        <button type="button" class="btn btn-ivory btn-sm book-prev"><span class="btn-face">‹ Anterior</span></button>
+        <span class="book-count">1 / ${paginas.length}</span>
+        <button type="button" class="btn btn-brass btn-sm book-next"><span class="btn-face">Virar página ›</span></button>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const pages = [...overlay.querySelectorAll('.bpage')];
+    let viradas = 0;
+    const atualiza = () => {
+      pages.forEach((pg, i) => {
+        pg.classList.toggle('flipped', i < viradas);
+        pg.style.zIndex = i < viradas ? i + 1 : pages.length - i + paginas.length;
+      });
+      overlay.querySelector('.book-count').textContent =
+        `${Math.min(viradas + 1, pages.length)} / ${pages.length}`;
+      overlay.querySelector('.book-prev').disabled = viradas === 0;
+      overlay.querySelector('.book-next').disabled = viradas >= pages.length - 1;
+    };
+    const proxima = () => { if (viradas < pages.length - 1) { viradas++; atualiza(); } };
+    const anterior = () => { if (viradas > 0) { viradas--; atualiza(); } };
+
+    pages.forEach((pg, i) => pg.addEventListener('click', () =>
+      pg.classList.contains('flipped') ? anterior() : proxima()));
+    overlay.querySelector('.book-next').addEventListener('click', proxima);
+    overlay.querySelector('.book-prev').addEventListener('click', anterior);
+
+    const fechar = () => { overlay.remove(); document.removeEventListener('keydown', teclas); };
+    const teclas = e => {
+      if (e.key === 'Escape') fechar();
+      if (e.key === 'ArrowRight') proxima();
+      if (e.key === 'ArrowLeft') anterior();
+    };
+    document.addEventListener('keydown', teclas);
+    overlay.querySelector('.book-close').addEventListener('click', fechar);
+    overlay.addEventListener('click', e => { if (e.target === overlay) fechar(); });
+    atualiza();
   }
 
   function pedirAcompanhamento(planoId) {

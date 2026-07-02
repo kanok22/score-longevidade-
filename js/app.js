@@ -8,6 +8,15 @@
   const $  = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
+  /* ---------- Barra de progresso de scroll ---------- */
+  const spb = document.createElement('div');
+  spb.className = 'scroll-progress';
+  document.body.appendChild(spb);
+  addEventListener('scroll', () => {
+    const h = document.documentElement;
+    spb.style.width = `${(h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) * 100}%`;
+  }, { passive: true });
+
   /* ---------- Scroll reveal ---------- */
   const revealObserver = new IntersectionObserver(entries => {
     for (const e of entries) {
